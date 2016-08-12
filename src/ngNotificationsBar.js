@@ -1,124 +1,139 @@
-(function (root, factory) {
-	if (typeof exports === 'object') {
-		module.exports = factory(root, require('angular'));
-	} else if (typeof define === 'function' && define.amd) {
-		define(['angular'], function (angular) {
-			return (root.ngNotificationsBar = factory(root, angular));
-		});
-	} else {
-		root.ngNotificationsBar = factory(root, root.angular);
-	}
-}(this, function (window, angular) {
-	var module = angular.module('ngNotificationsBar', []);
+(function(root, factory) {
+    if (typeof exports === 'object') {
+        module.exports = factory(root, require('angular'));
+    } else if (typeof define === 'function' && define.amd) {
+        define(['angular'], function(angular) {
+            return (root.ngNotificationsBar = factory(root, angular));
+        });
+    } else {
+        root.ngNotificationsBar = factory(root, root.angular);
+    }
+}(this, function(window, angular) {
+    var module = angular.module('ngNotificationsBar', []);
 
-	module.provider('notificationsConfig', function() {
-		var config = {};
+    module.provider('notificationsConfig', function() {
+        var config = {};
 
-		function setHideDelay(value){
-			config.hideDelay = value;
-		}
+        function setHideDelay(value) {
+            config.hideDelay = value;
+        }
 
-		function getHideDelay(){
-			return config.hideDelay;
-		}
+        function getHideDelay() {
+            return config.hideDelay;
+        }
 
-		function setAcceptHTML(value){
-			config.acceptHTML = value;
-		}
+        function setAcceptHTML(value) {
+            config.acceptHTML = value;
+        }
 
-		function getAcceptHTML(){
-			return config.acceptHTML;
-		}
+        function getAcceptHTML() {
+            return config.acceptHTML;
+        }
 
+        function setMaxNotifications(value) {
+            config.maxNotifications = value;
+        }
 
-		function setAutoHide(value){
-			config.autoHide = value;
-		}
-		
-		function setAutoHideAnimation(value){
-			config.autoHideAnimation = value;
-		}
-		
-		function getAutoHideAnimation(){
-			return config.autoHideAnimation;
-		}
-		
-		function setAutoHideAnimationDelay(value){
-			config.autoHideAnimationDelay = value;
-		}
-		
-		function getAutoHideAnimationDelay(){
-			return config.autoHideAnimationDelay;
-		}
+        function getMaxNotifications() {
+            return config.maxNotifications;
+        }
 
-		function getAutoHide(){
-			return config.autoHide;
-		}
+        function setMaxNotificationsByID(value) {
+            config.maxNotificationsByID = value;
+        }
 
-		return {
-			setHideDelay: setHideDelay,
+        function getMaxNotificationsByID() {
+            return config.maxNotificationsByID;
+        }
 
-			setAutoHide: setAutoHide,
-			
-			setAutoHideAnimation: setAutoHideAnimation,
-			
-			setAutoHideAnimationDelay: setAutoHideAnimationDelay,
+        function setAutoHide(value) {
+            config.autoHide = value;
+        }
 
-			setAcceptHTML: setAcceptHTML,
+        function setAutoHideAnimation(value) {
+            config.autoHideAnimation = value;
+        }
 
-			$get: function(){
-				return {
-					getHideDelay: getHideDelay,
+        function getAutoHideAnimation() {
+            return config.autoHideAnimation;
+        }
 
-					getAutoHide: getAutoHide,
-					
-					getAutoHideAnimation: getAutoHideAnimation,
-					
-					getAutoHideAnimationDelay: getAutoHideAnimationDelay,
+        function setAutoHideAnimationDelay(value) {
+            config.autoHideAnimationDelay = value;
+        }
 
-					getAcceptHTML: getAcceptHTML
-				};
-			}
-		};
-	});
+        function getAutoHideAnimationDelay() {
+            return config.autoHideAnimationDelay;
+        }
 
-	module.factory('notifications', ['$rootScope', function ($rootScope) {
-		var showError = function (message) {
-			$rootScope.$broadcast('notifications:error', message);
-		};
+        function getAutoHide() {
+            return config.autoHide;
+        }
 
-		var showWarning = function (message) {
-			$rootScope.$broadcast('notifications:warning', message);
-		};
-		
-		var showInfo = function (message) {
-			$rootScope.$broadcast('notifications:info', message);
-		};
+        return {
+            setHideDelay: setHideDelay,
 
-		var showSuccess = function (message) {
-			$rootScope.$broadcast('notifications:success', message);
-		};
+            setAutoHide: setAutoHide,
 
-		var closeAll = function () {
-			$rootScope.$broadcast('notifications:closeAll');
-		};
+            setAutoHideAnimation: setAutoHideAnimation,
 
-		return {
-			showError: showError,
-			showInfo: showInfo,
-			showWarning: showWarning,
-			showSuccess: showSuccess,
-			closeAll: closeAll
-		};
-	}]);
+            setAutoHideAnimationDelay: setAutoHideAnimationDelay,
 
-	module.directive('notificationsBar', ['notificationsConfig', '$timeout', function (notificationsConfig, $timeout) {
-		return {
-			restrict: 'EA',
-			template: function(elem, attr){
-				var acceptHTML = notificationsConfig.getAcceptHTML() || false;
-				var iconClasses = attr.closeicon || 'glyphicon glyphicon-remove';
-				return acceptHTML ? '\
+            setAcceptHTML: setAcceptHTML,
+
+            $get: function() {
+                return {
+                    getHideDelay: getHideDelay,
+
+                    getAutoHide: getAutoHide,
+
+                    getAutoHideAnimation: getAutoHideAnimation,
+
+                    getAutoHideAnimationDelay: getAutoHideAnimationDelay,
+
+                    getAcceptHTML: getAcceptHTML
+                };
+            }
+        };
+    });
+
+    module.factory('notifications', ['$rootScope', function($rootScope) {
+        var showError = function(message) {
+            $rootScope.$broadcast('notifications:error', message);
+        };
+
+        var showWarning = function(message) {
+            $rootScope.$broadcast('notifications:warning', message);
+        };
+
+        var showInfo = function(message) {
+            $rootScope.$broadcast('notifications:info', message);
+        };
+
+        var showSuccess = function(message) {
+            $rootScope.$broadcast('notifications:success', message);
+        };
+
+        var closeAll = function() {
+            $rootScope.$broadcast('notifications:closeAll');
+        };
+
+        return {
+            showError: showError,
+            showInfo: showInfo,
+            showWarning: showWarning,
+            showSuccess: showSuccess,
+            closeAll: closeAll
+        };
+    }]);
+
+    module.directive('notificationsBar', ['notificationsConfig', '$timeout', function(notificationsConfig, $timeout) {
+        return {
+            restrict: 'EA',
+            template: function(elem, attr) {
+                var acceptHTML = notificationsConfig.getAcceptHTML() || false;
+                var iconClasses = attr.closeicon || 'glyphicon glyphicon-remove';
+                return acceptHTML ? '\
 					<div class="notifications-container" ng-if="notifications.length">\
 						<div class="{{note.type}}" ng-repeat="note in notifications" ng-class="note.animation">\
 							<span class="message" ng-bind-html="note.message"></span>\
@@ -134,83 +149,87 @@
 					</div>\
 				'
 
-			},
-			link: function (scope) {
-				var notifications = scope.notifications = [];
-				var timers = [];
-				var autoHideDelay = notificationsConfig.getHideDelay() || 3000;
-				var autoHide = notificationsConfig.getAutoHide() || false;
-				var autoHideAnimation = notificationsConfig.getAutoHideAnimation() || '';
-				var autoHideAnimationDelay = notificationsConfig.getAutoHideAnimationDelay() || 1200;
+            },
+            link: function(scope) {
+                var notifications = scope.notifications = [];
+                var timers = [];
+                var autoHideDelay = notificationsConfig.getHideDelay() || 3000;
+                var autoHide = notificationsConfig.getAutoHide() || false;
+                var autoHideAnimation = notificationsConfig.getAutoHideAnimation() || '';
+                var autoHideAnimationDelay = notificationsConfig.getAutoHideAnimationDelay() || 1200;
+                var maxNotifications = notificationsConfig.getMaxNotifications() || false;
 
-				var removeById = function (id) {
-					var found = -1;
+                var removeById = function(id) {
+                    var found = -1;
 
-					notifications.forEach(function (el, index) {
-						if (el.id === id) {
-							found = index;
-							
-							el.animation = {};
-							el.animation[autoHideAnimation] = true;
-							
-							scope.$apply();
-						}
-					});
+                    notifications.forEach(function(el, index) {
+                        if (el.id === id) {
+                            found = index;
 
-					if (found >= 0) {
-						$timeout(function(){
-							notifications.splice(found, 1);
-						}, autoHideAnimationDelay);
-					}
-				};
+                            el.animation = {};
+                            el.animation[autoHideAnimation] = true;
 
-				var notificationHandler = function (event, data, type, animation) {
-					var message, hide = autoHide, hideDelay = autoHideDelay;
+                            scope.$apply();
+                        }
+                    });
 
-					if (typeof data === 'object') {
-						message = data.message;
-						hide = (typeof data.hide === 'undefined') ? autoHide : !!data.hide;
-						hideDelay = data.hideDelay || hideDelay;
-					} else {
-						message = data;
-					}
+                    if (found >= 0) {
+                        $timeout(function() {
+                            notifications.splice(found, 1);
+                        }, autoHideAnimationDelay);
+                    }
+                };
 
-					var id = 'notif_' + (new Date()).getTime();
-					notifications.push({id: id, type: type, message: message, animation: animation});
-					if (hide) {
-						var timer = $timeout(function () {
-							removeById(id);
-							$timeout.cancel(timer);
-						}, hideDelay);
-					}
-				};
+                var notificationHandler = function(event, data, type, animation) {
+                    var id, message, hide = autoHide, hideDelay = autoHideDelay;
 
-				scope.$on('notifications:error', function (event, data) {
-					notificationHandler(event, data, 'error');
-				});
+                    if (typeof data === 'object') {
+                        id = (data.id) ? 'notif_' + data.id : 'notif_' + (new Date()).getTime();
+                        message = data.message;
+                        hide = (typeof data.hide === 'undefined') ? autoHide : !!data.hide;
+                        hideDelay = data.hideDelay || hideDelay;
+                    } else {
+                        id = 'notif_' + (new Date()).getTime();
+                        message = data;
+                    }
 
-				scope.$on('notifications:warning', function (event, data) {
-					notificationHandler(event, data, 'warning');
-				});
-				
-				scope.$on('notifications:info', function (event, data) {
-					notificationHandler(event, data, 'info');
-				});
+                    if (maxNotifications && notifications.size() < maxNotifications) {
+                        notifications.push({id: id, type: type, message: message, animation: animation});
+                    }
+                    if (hide) {
+                        var timer = $timeout(function() {
+                            removeById(id);
+                            $timeout.cancel(timer);
+                        }, hideDelay);
+                    }
+                };
 
-				scope.$on('notifications:success', function (event, data) {
-					notificationHandler(event, data, 'success');
-				});
+                scope.$on('notifications:error', function(event, data) {
+                    notificationHandler(event, data, 'error');
+                });
 
-				scope.$on('notifications:closeAll', function () {
-					notifications.length = 0;
-				})
+                scope.$on('notifications:warning', function(event, data) {
+                    notificationHandler(event, data, 'warning');
+                });
 
-				scope.close = function (index) {
-					notifications.splice(index, 1);
-				};
-			}
-		};
-	}]);
+                scope.$on('notifications:info', function(event, data) {
+                    notificationHandler(event, data, 'info');
+                });
 
-	return module;
+                scope.$on('notifications:success', function(event, data) {
+                    notificationHandler(event, data, 'success');
+                });
+
+                scope.$on('notifications:closeAll', function() {
+                    notifications.length = 0;
+                })
+
+                scope.close = function(index) {
+                    notifications.splice(index, 1);
+                };
+            }
+        };
+    }]);
+
+    return module;
 }));
